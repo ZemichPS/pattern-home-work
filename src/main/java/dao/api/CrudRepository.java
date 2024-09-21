@@ -1,13 +1,15 @@
 package dao.api;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CrudRepository<T, E> {
-    E save(E entity);
+    E create(E entity);
+    E update(E entity);
 
     List<E> getAll();
 
-    E getById(T id);
+    Optional<E> getById(T id);
 
     void delete(E entity);
 
