@@ -3,10 +3,10 @@ package model.command;
 import model.api.Command;
 import model.api.PlayBox;
 
-public class PlayMusicCommand implements Command {
+public class PlayMusicCommand<T extends PlayBox> implements Command {
 
-    private PlayBox playBox;
-    public PlayMusicCommand(PlayBox playBox) {
+    private T playBox;
+    public PlayMusicCommand(T playBox) {
         this.playBox = playBox;
     }
 

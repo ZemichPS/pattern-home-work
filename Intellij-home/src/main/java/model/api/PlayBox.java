@@ -1,6 +1,6 @@
 package model.api;
 
-public interface PlayBox {
+public interface PlayBox extends Device{
     void play();
     void pause();
     void stop();

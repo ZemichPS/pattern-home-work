@@ -30,14 +30,14 @@ public class OrderServiceFacade {
     public Order createAndNotify(Order order) {
         orderService.save(order);
         String subject = "Order created";
-        String text = "Order id: " + order.uuid();
+        String text = "Order id: " + order.getUuid();
         notify(order, subject, text);
         return order;
     }
 
     public void cancelAndNotify(Order order) {
         orderService.delete(order);
-        UUID orderUuid = order.uuid();
+        UUID orderUuid = order.getUuid();
         String subject = "Order canceled";
         String text = String.format("Order id: %s was canceled", orderUuid);
         notify(order, subject, text);
@@ -45,7 +45,7 @@ public class OrderServiceFacade {
 
     public void updateAndNotify(Order order) {
         orderService.delete(order);
-        UUID orderUuid = order.uuid();
+        UUID orderUuid = order.getUuid();
         String subject = "Order updated";
         String text = String.format("Order id: %s was updated", orderUuid);
         notify(order, subject, text);
@@ -56,7 +56,7 @@ public class OrderServiceFacade {
     }
 
     private void notify(Order order, String subject, String text) {
-        UUID userUuid = order.uuid();
+        UUID userUuid = order.getUserUuid();
         Customer customer = customerService.getById(userUuid).orElseThrow(() -> new RuntimeException("Customer not found"));
         notificationServices.forEach(service -> {
             try {

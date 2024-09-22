@@ -7,10 +7,10 @@ import model.api.PlayBox;
 
 import java.util.UUID;
 
-public class MusicBox extends AbstractDevice implements PlayBox {
+public class SimplePlayBox extends AbstractDevice implements PlayBox {
     private int volume = 30;
 
-    public MusicBox(UUID id, String name, String address, Connectivity connectivity) {
+    public SimplePlayBox(UUID id, String name, String address, Connectivity connectivity) {
         super(id, name, address, connectivity);
     }
 

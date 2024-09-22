@@ -1,4 +1,4 @@
-package model;
+package service;
 
 import model.api.Command;
 

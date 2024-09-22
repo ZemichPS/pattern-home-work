@@ -117,11 +117,6 @@ public class ProductRepositoryImpl implements ProductRepository {
 
 
     private Product mapRowToProduct(ResultSet resultSet) throws SQLException {
-        return new Product(
-                UUID.fromString(resultSet.getString("uuid")),
-                Category.valueOf(resultSet.getString("category")),
-                resultSet.getString("name"),
-                resultSet.getBigDecimal("price")
-        );
+        return null;
     }
 }

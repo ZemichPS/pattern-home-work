@@ -2,7 +2,7 @@ package model.api;
 
 import model.Color;
 
-public interface Lamp {
+public interface Lamp extends Device {
     void setBrightness(int brightness);
     void setColor(Color color);
 }

@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public abstract class AbstractDevice implements Device {
+public abstract class AbstractDevice{
     private UUID id;
     private String name;
     private String address;

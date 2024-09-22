@@ -25,7 +25,7 @@ public class ProductOnSaleEmailNotificatorListener implements EventListener<Prod
             String message;
             if (eventType.equals("NEW_PRODUCT_ON_SALE"))
                 message = "Great news! We have new products at discounts. Product: %s. Price %s "
-                        .formatted(observable.name(), observable.price().setScale(2, RoundingMode.DOWN))
+                        .formatted(observable.name(), observable.price().setScale(2, RoundingMode.DOWN));
             else
                 message = "Great news! Great news! We have reduced the prices".formatted(observable.name(), observable.price().setScale(2, RoundingMode.DOWN));
 
