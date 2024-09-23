@@ -1,4 +1,4 @@
-package service.api;
+package service.impl.validation;
 
 import java.util.Objects;
 
@@ -11,10 +11,9 @@ public abstract class Validator<T> {
         return nextValidator;
     }
 
-    public abstract void validate(T t);
+    public abstract void validate(T validated);
 
-    public void checkNext(T t) {
-        if (Objects.isNull(nextValidator)) return;
-        nextValidator.validate(t);
+    public void checkNext(T validated) {
+        if (Objects.nonNull(nextValidator)) nextValidator.validate(validated);
     }
 }

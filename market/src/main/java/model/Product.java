@@ -1,12 +1,28 @@
 package model;
 
+import jdk.jfr.Enabled;
+import lombok.*;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
-public record Product(
-        UUID uuid,
-        Category category,
-        String name,
-        BigDecimal price,
-        boolean sale) {
+
+@Entity
+@Getter
+@Setter
+public final class Product {
+    @Id
+    private UUID uuid;
+
+    @Enumerated(EnumType.STRING)
+    private Category category;
+
+    private String name;
+
+    private BigDecimal price;
+
+    private boolean sale;
 }

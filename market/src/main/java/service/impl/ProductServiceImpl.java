@@ -1,8 +1,8 @@
 package service.impl;
 
-import dao.api.ProductRepository;
+import dao.impl.ProductPersistenceRepository;
 import model.Product;
-import service.api.ProductService;
+import service.api.crud.ProductService;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,10 +10,10 @@ import java.util.UUID;
 
 public class ProductServiceImpl implements ProductService {
 
-    private final ProductRepository repository;
+    private final ProductPersistenceRepository repository;
     private final EventManager eventManager;
 
-    public ProductServiceImpl(ProductRepository repository,
+    public ProductServiceImpl(ProductPersistenceRepository repository,
                               EventManager eventManager) {
         this.repository = repository;
         this.eventManager = eventManager;
@@ -22,8 +22,13 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product save(Product product) {
         repository.create(product);
-        if(product.sale()) eventManager.publish("NEW_PRODUCT_ON_SALE", product);
+        if(product.isSale()) eventManager.publish("NEW_PRODUCT_ON_SALE", product);
         return product;
+    }
+
+    @Override
+    public Product update(Product entity) {
+        return repository.update(entity);
     }
 
     @Override

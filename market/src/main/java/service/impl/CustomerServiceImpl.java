@@ -1,8 +1,8 @@
 package service.impl;
 
-import dao.api.CustomerRepository;
+import dao.impl.CustomerPersistenceRepository;
 import model.Customer;
-import service.api.CustomerService;
+import service.api.crud.CustomerService;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,15 +10,20 @@ import java.util.UUID;
 
 public class CustomerServiceImpl implements CustomerService {
 
-    private final CustomerRepository repository;
+    private final CustomerPersistenceRepository repository;
 
-    public CustomerServiceImpl(CustomerRepository repository) {
+    public CustomerServiceImpl(CustomerPersistenceRepository repository) {
         this.repository = repository;
     }
 
     @Override
     public Customer save(Customer entity) {
         return repository.create(entity);
+    }
+
+    @Override
+    public Customer update(Customer entity) {
+        return repository.update(entity);
     }
 
     @Override

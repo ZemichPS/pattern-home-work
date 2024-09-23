@@ -1,5 +1,6 @@
 package service.impl;
 
+import model.Notification;
 import service.api.EmailService;
 
 import javax.mail.*;
@@ -7,14 +8,14 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
-public class EmailServiceImpl implements EmailService {
+public class EmailServiceImpl implements EmailService<Notification> {
     private String host = "smtp.gmail.com";
     private String port = "587";
     final String username = "your-email@gmail.com"; // ваша почта
     final String password = "your-password";
 
     @Override
-    public void send(String emailTo, String subject, String body) throws MessagingException {
+    public void send(String emailTo, Notification notification) throws MessagingException {
         Properties properties = new Properties();
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
@@ -30,8 +31,8 @@ public class EmailServiceImpl implements EmailService {
         Message message = new MimeMessage(session);
         message.setFrom(new InternetAddress(username)); // Отправитель
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailTo)); // Получатель
-        message.setSubject(subject);
-        message.setText(body);
+        message.setSubject(notification.getSubject());
+        message.setText(notification.getBody());
         Transport.send(message);
     }
 }

@@ -1,8 +1,8 @@
 package service.impl;
 
-import dao.api.OrderRepository;
+import dao.impl.OrderPersistenceRepository;
 import model.Order;
-import service.api.OrderService;
+import service.api.crud.OrderService;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,18 +10,20 @@ import java.util.UUID;
 
 public class OrderServiceImpl implements OrderService {
 
-    private final OrderRepository repository;
-    private final EventManager eventManager;
+    private final OrderPersistenceRepository repository;
 
-    public OrderServiceImpl(OrderRepository repository, EventManager eventManager) {
+    public OrderServiceImpl(OrderPersistenceRepository repository) {
         this.repository = repository;
-        this.eventManager = eventManager;
     }
 
     @Override
     public Order save(Order order) {
-        eventManager.publish("ORDER_CREATED", order);
         return repository.create(order);
+    }
+
+    @Override
+    public Order update(Order entity) {
+        return repository.update(entity);
     }
 
     @Override

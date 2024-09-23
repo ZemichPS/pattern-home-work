@@ -1,55 +1,60 @@
 package model;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Entity
 public class Order {
+    @Getter
+    @Setter
+    @Id
     private UUID uuid;
-    private UUID userUuid;
-    private final List<Product> productList = new ArrayList<>();
+
+    @Getter
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Customer customer;
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY,
+            mappedBy = "order"
+    )
+    @JoinColumn(name = "customer_uuid", referencedColumnName = "uuid")
+    private List<OrderItem> orderItems = new ArrayList<>();
+
+    @Getter
+    @Setter
     private Status status;
 
-    public Order(UUID uuid, UUID userUuid, Status status) {
-        this.uuid = uuid;
-        this.userUuid = userUuid;
-        this.status = status;
+    public Order addOrderItem(OrderItem orderItem) {
+        orderItems.add(orderItem);
+        return this;
     }
 
-    public void addProduct(Product product) {
-        productList.add(product);
+    public Order removeOrderItem(OrderItem orderItem) {
+        orderItem.setOrder(null);
+        orderItems.remove(orderItem);
+        return this;
     }
 
-    public void removeProduct(Product product) {
-        productList.remove(product);
-    }
-
-    public BigDecimal totalPrice() {
-        return productList.stream()
-                .map(Product::price)
+    public BigDecimal calculateTotalPrice() {
+        return orderItems.stream()
+                .map(orderItem -> {
+                    BigDecimal price = orderItem.getProduct().getPrice();
+                    return price.multiply(new BigDecimal(orderItem.getQuantity()));
+                })
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-
     public int getProductCount() {
-        return productList.size();
-    }
-
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public UUID getUserUuid() {
-        return userUuid;
-    }
-
-    public UUID getUuid() {
-        return uuid;
+        return orderItems.size();
     }
 }
