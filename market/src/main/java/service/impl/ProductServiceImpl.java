@@ -22,7 +22,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product save(Product product) {
         repository.create(product);
-        if(product.isSale()) eventManager.publish("NEW_PRODUCT_ON_SALE", product);
+        //if(product.isSale()) eventManager.publish("NEW_PRODUCT_ON_SALE", product);
         return product;
     }
 

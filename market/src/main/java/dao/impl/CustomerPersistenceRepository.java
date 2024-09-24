@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public class CustomerPersistenceRepository extends AbstractPersistenceRepository<Customer, UUID> {
 
-    public CustomerPersistenceRepository(Class<Customer> entityClass) {
+    public CustomerPersistenceRepository() {
         super(Customer.class);
     }
 }

@@ -10,37 +10,38 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-public class Order {
+public class OrderDetails {
     @Getter
     @Setter
     @Id
     private UUID uuid;
 
     @Getter
-    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     private Customer customer;
 
     @OneToMany(
             cascade = CascadeType.ALL,
             orphanRemoval = true,
-            fetch = FetchType.LAZY,
-            mappedBy = "order"
+            fetch = FetchType.LAZY
+            //  mappedBy = "order"
     )
-    @JoinColumn(name = "customer_uuid", referencedColumnName = "uuid")
+
     private List<OrderItem> orderItems = new ArrayList<>();
 
     @Getter
     @Setter
+    @Enumerated(EnumType.STRING)
     private Status status;
 
-    public Order addOrderItem(OrderItem orderItem) {
+    public OrderDetails addOrderItem(OrderItem orderItem) {
+        orderItem.setOrderDetails(this);
         orderItems.add(orderItem);
         return this;
     }
 
-    public Order removeOrderItem(OrderItem orderItem) {
-        orderItem.setOrder(null);
+    public OrderDetails removeOrderItem(OrderItem orderItem) {
+        orderItem.setOrderDetails(null);
         orderItems.remove(orderItem);
         return this;
     }
@@ -52,6 +53,11 @@ public class Order {
                     return price.multiply(new BigDecimal(orderItem.getQuantity()));
                 })
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public OrderDetails addCustomer(Customer customer){
+        this.customer = customer;
+        return this;
     }
 
     public int getProductCount() {

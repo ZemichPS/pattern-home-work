@@ -1,7 +1,7 @@
 package service.api;
 
-import model.Order;
+import model.OrderDetails;
 
 public interface CustomerNotificationService {
-    void notify(Order order);
+    void notify(OrderDetails orderDetails);
 }

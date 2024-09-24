@@ -2,7 +2,7 @@ package service.impl;
 
 import model.Customer;
 import model.Notification;
-import model.Order;
+import model.OrderDetails;
 import service.impl.notificationHanddlers.NotificationHandler;
 import service.api.CustomerNotificationService;
 import service.api.crud.CustomerService;
@@ -12,11 +12,11 @@ import java.util.List;
 import java.util.UUID;
 
 public class CustomerNotificationServiceImpl implements CustomerNotificationService {
-    private final List<NotificationHandler> notificationHandlers;
+    private final List<NotificationHandler<Customer, Notification>> notificationHandlers;
     private final CustomerService customerService;
 
     public CustomerNotificationServiceImpl(
-            List<NotificationHandler> notificationHandlers,
+            List<NotificationHandler<Customer, Notification>> notificationHandlers,
             CustomerService customerService
     ) {
         this.notificationHandlers = notificationHandlers;
@@ -24,11 +24,11 @@ public class CustomerNotificationServiceImpl implements CustomerNotificationServ
     }
 
     @Override
-    public void notify(Order order) {
-        UUID customerUuid = order.getCustomer().getUuid();
+    public void notify(OrderDetails orderDetails) {
+        UUID customerUuid = orderDetails.getCustomer().getUuid();
         Customer customer = customerService.getById(customerUuid).orElseThrow(() -> new RuntimeException("Customer not found"));
         notificationHandlers.forEach(service -> {
-            Notification notification = createNotification(order);
+            Notification notification = createNotification(orderDetails);
             try {
                 service.notify(customer, notification);
             } catch (MessagingException e) {
@@ -41,14 +41,14 @@ public class CustomerNotificationServiceImpl implements CustomerNotificationServ
         notificationHandlers.add(notificationHandler);
     }
 
-    private Notification createNotification(Order order) {
-        String notificationBody = switch (order.getStatus()) {
-            case NEW -> "Order has been created";
-            case CANCELED -> "Order has been canceled";
-            case DELIVERED -> "Order has been delivered";
+    private Notification createNotification(OrderDetails orderDetails) {
+        String notificationBody = switch (orderDetails.getStatus()) {
+            case NEW -> "OrderDetails has been created";
+            case CANCELED -> "OrderDetails has been canceled";
+            case DELIVERED -> "OrderDetails has been delivered";
         };
 
-        String subject = "Order status changed";
+        String subject = "OrderDetails status changed";
         return new Notification(subject, notificationBody);
     }
 }

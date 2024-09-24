@@ -1,13 +1,13 @@
 package service.impl.validation.order;
 
-import model.Order;
+import model.OrderDetails;
 import model.Status;
 import service.impl.validation.Validator;
 
-public class OrderActiveValidator extends Validator<Order> {
+public class OrderActiveValidator extends Validator<OrderDetails> {
     @Override
-    public void validate(Order validated) {
-        if (validated.getStatus().equals(Status.CANCELED)) throw new RuntimeException("Order status can't be canceled");
+    public void validate(OrderDetails validated) {
+        if (validated.getStatus().equals(Status.CANCELED)) throw new RuntimeException("OrderDetails status can't be canceled");
         checkNext(validated);
     }
 }

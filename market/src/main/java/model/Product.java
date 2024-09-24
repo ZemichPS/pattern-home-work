@@ -13,6 +13,9 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
+@Builder
+@RequiredArgsConstructor
+@AllArgsConstructor
 public final class Product {
     @Id
     private UUID uuid;
@@ -25,4 +28,5 @@ public final class Product {
     private BigDecimal price;
 
     private boolean sale;
+
 }

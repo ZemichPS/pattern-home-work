@@ -1,13 +1,13 @@
 package service.impl;
 
 import model.Notification;
-import model.Order;
+import model.OrderDetails;
 import service.api.EmailService;
 import service.api.EventListener;
 
 import javax.mail.MessagingException;
 
-public class OrderTracker implements EventListener<Order> {
+public class OrderTracker implements EventListener<OrderDetails> {
 
     private final String adminEmail;
     private final EmailService<Notification> emailService;
@@ -18,9 +18,9 @@ public class OrderTracker implements EventListener<Order> {
     }
 
     @Override
-    public void update(String eventType, Order observable) {
+    public void update(String eventType, OrderDetails observable) {
         try {
-            Notification notification = new Notification("Order status has been changed", observable.toString());
+            Notification notification = new Notification("OrderDetails status has been changed", observable.toString());
             emailService.send(adminEmail, notification);
         } catch (MessagingException e) {
             throw new RuntimeException("Error sending email", e);

@@ -25,7 +25,7 @@ public final class Customer {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<Order> orders;
+    private List<OrderDetails> orderDetails;
     private String name;
     private String surname;
     private String email;

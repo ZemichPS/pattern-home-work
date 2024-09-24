@@ -19,11 +19,18 @@ public class OrderItem {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_uuid", referencedColumnName = "uuid")
-    private Order order;
+    private OrderDetails orderDetails;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_uuid", referencedColumnName = "uuid")
     private Product product;
 
+    public OrderItem addProduct(Product product) {
+        this.product = product;
+        return this;
+    }
+
     private int quantity;
+
+
 }

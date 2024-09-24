@@ -1,15 +1,15 @@
 package dao.impl;
 
 
-import model.Order;
+import model.OrderDetails;
 
 import java.util.UUID;
 
 
-public class OrderPersistenceRepository extends AbstractPersistenceRepository<Order, UUID> {
+public class OrderPersistenceRepository extends AbstractPersistenceRepository<OrderDetails, UUID> {
 
     public OrderPersistenceRepository() {
-        super(Order.class);
+        super(OrderDetails.class);
     }
 
 }
