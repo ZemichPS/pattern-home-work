@@ -63,4 +63,12 @@ public class OrderDetails {
     public int getProductCount() {
         return orderItems.size();
     }
+
+    @Override
+    public String toString() {
+        return "OrderDetails{" +
+                "uuid=" + uuid +
+                ", status=" + status +
+                '}';
+    }
 }

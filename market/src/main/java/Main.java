@@ -79,6 +79,9 @@ public class Main {
         orderDetails.setStatus(Status.NEW);
         orderDetails.addOrderItem(orderItem);
 
-        orderServiceFacade.createAndNotify(orderDetails);
+        OrderDetails savedOrderDetails = orderServiceFacade.createAndNotify(orderDetails);
+
+        final List<OrderDetails> all = orderServiceFacade.getAll();
+        orderServiceFacade.delete(savedOrderDetails);
     }
 }

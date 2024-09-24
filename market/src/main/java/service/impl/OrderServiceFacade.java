@@ -51,4 +51,8 @@ public class OrderServiceFacade {
         return orderDetailsService.getAll();
     }
 
+    public void delete(OrderDetails orderDetails) {
+        orderDetailsService.delete(orderDetails);
+    }
+
 }

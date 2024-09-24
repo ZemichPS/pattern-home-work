@@ -34,11 +34,13 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
     }
 
     @Override
+    @Log
     public List<OrderDetails> getAll() {
         return repository.getAll();
     }
 
     @Override
+    @Log
     public void delete(OrderDetails entity) {
         repository.delete(entity);
     }
