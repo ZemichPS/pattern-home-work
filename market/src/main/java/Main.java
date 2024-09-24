@@ -23,6 +23,7 @@ import java.util.UUID;
 public class Main {
     public static void main(String[] args) {
 
+
         OrderDetailsService orderDetailsService = new OrderDetailsServiceImpl(new OrderPersistenceRepository());
         OrderDetailsService proxyOrderDetailsService = new ProxyOrderDetailsService(orderDetailsService);
 
@@ -36,6 +37,9 @@ public class Main {
                 new SmsNotificationHandlerImpl()
         );
         CustomerNotificationService customerNotificationService = new CustomerNotificationServiceImpl(notificationHandlers, customerService);
+
+        OrderTracker orderTracker = new OrderTracker("zemich", emailService);
+        eventManager.subscribe("OrderCreated", orderTracker);
 
         Validator<OrderDetails> validator = new OrderActiveValidator();
         validator.linkWith(new OrderQuantityValidator())

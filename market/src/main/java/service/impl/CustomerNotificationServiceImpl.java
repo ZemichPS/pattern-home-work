@@ -10,10 +10,14 @@ import service.api.crud.CustomerService;
 import javax.mail.MessagingException;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 public class CustomerNotificationServiceImpl implements CustomerNotificationService {
     private final List<NotificationHandler<Customer, Notification>> notificationHandlers;
     private final CustomerService customerService;
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     public CustomerNotificationServiceImpl(
             List<NotificationHandler<Customer, Notification>> notificationHandlers,
@@ -32,7 +36,9 @@ public class CustomerNotificationServiceImpl implements CustomerNotificationServ
             try {
                 service.notify(customer, notification);
             } catch (MessagingException e) {
-                throw new RuntimeException(e);
+
+                logger.log(new LogRecord(Level.WARNING, "Failed to notify customer by service: %s, cause: %s".formatted(
+                        service.getClass().getName(), e.getMessage())));
             }
         });
     }

@@ -23,8 +23,8 @@ public class OrderDetails {
     @OneToMany(
             cascade = CascadeType.ALL,
             orphanRemoval = true,
-            fetch = FetchType.LAZY
-            //  mappedBy = "order"
+            fetch = FetchType.LAZY,
+            mappedBy = "orderDetails"
     )
 
     private List<OrderItem> orderItems = new ArrayList<>();

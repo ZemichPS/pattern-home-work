@@ -23,11 +23,10 @@ public class EventManager {
     }
 
     public <T> void publish(String eventType, T observable) {
-        if (!listeners.containsKey(eventType)) {
-            throw new RuntimeException("Event not subscribed");
+        if (listeners.containsKey(eventType)) {
+            listeners.get(eventType).forEach(eventListener -> {
+                ((EventListener<T>) eventListener).update(eventType, observable);
+            });
         }
-        listeners.get(eventType).forEach(eventListener -> {
-            ((EventListener<T>) eventListener).update(eventType, observable);
-        });
     }
 }

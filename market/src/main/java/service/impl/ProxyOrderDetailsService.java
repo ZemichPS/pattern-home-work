@@ -57,20 +57,24 @@ public class ProxyOrderDetailsService implements OrderDetailsService {
                 .anyMatch(annotation -> annotation.annotationType().equals(Log.class));
     }
 
-    private <T> Result<T> log(Class<T> tClass, Object... args) {
+    private Method getProxiedMethodByCallerMethodName(Object... args) {
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-        StackTraceElement currentElement = stackTrace[2];
+        StackTraceElement currentElement = stackTrace[3];
         String callerMethodName = currentElement.getMethodName();
 
         Class<?>[] parameterTypes = Arrays.stream(args).map(Object::getClass).toArray(Class<?>[]::new);
-        Object result = null;
-        Method proxiedMethod;
 
         try {
-            proxiedMethod = orderDetailsService.getClass().getMethod(callerMethodName, parameterTypes);
+            return orderDetailsService.getClass().getMethod(callerMethodName, parameterTypes);
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private <T> Result<T> log(Class<T> returnClazzType, Object... args) {
+
+        Method proxiedMethod = getProxiedMethodByCallerMethodName(args);
+        Object result = null;
 
         if (checkOnLogAnnotationPresence(proxiedMethod)) {
             proxiedMethod.setAccessible(true);
@@ -84,7 +88,8 @@ public class ProxyOrderDetailsService implements OrderDetailsService {
                 throw new RuntimeException(e);
             }
             long wastedTime = System.currentTimeMillis() - startTime;
-            System.out.println("The method %s has been successfully completed; Wasted time: %d millis".formatted(originMethodName, wastedTime));
+            System.out.println("The method %s has been successfully completed; Wasted time: %d millis"
+                    .formatted(originMethodName, wastedTime));
             proxiedMethod.setAccessible(false);
         } else {
             try {
@@ -95,13 +100,10 @@ public class ProxyOrderDetailsService implements OrderDetailsService {
         }
 
         if (result instanceof List) {
-            result.getClass().getGenericSuperclass();
             return new Result<>((List<T>) result);
         }
-        return new Result<>(tClass.cast(result));
+        return new Result<>(returnClazzType.cast(result));
     }
-
-
 }
 
 

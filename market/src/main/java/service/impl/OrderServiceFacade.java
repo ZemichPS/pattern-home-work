@@ -29,8 +29,8 @@ public class OrderServiceFacade {
     public OrderDetails createAndNotify(OrderDetails orderDetails) {
         validator.validate(orderDetails);
         orderDetailsService.save(orderDetails);
-        // customerNotificationService.notify(orderDetails);
-        //eventManager.publish(orderDetails.getStatus().name(), orderDetails);
+        customerNotificationService.notify(orderDetails);
+        eventManager.publish("OrderCreated", orderDetails);
         return orderDetails;
     }
 
